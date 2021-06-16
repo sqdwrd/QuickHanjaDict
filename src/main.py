@@ -1,10 +1,14 @@
 import requests
+import os
 
 browser_header = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, "
                                 "like Gecko) Chrome/88.0.4324.190 Safari/537.36"}
 
 
 def get_index(search: str):
+    divider = list()
+    for i in range(os.get_terminal_size().columns):
+        divider.append("─")
     json = requests.get("https://hanja.dict.naver.com/api3/ccko/search?query=" + search +
                         "&range=word&page=1&shouldSearchOpen=false", headers=browser_header).json()
     word_json = json['searchResultMap']['searchResultListMap']['WORD']['items'][0]
@@ -18,7 +22,7 @@ def get_index(search: str):
     for i in index.json()["searchResult"]:
         chars.append("[" + i['expKoreanPron'] + "]")
     print(" / ".join(chars))
-    print("__________________________________")
+    print("".join(divider))
 
 
 if __name__ == '__main__':
