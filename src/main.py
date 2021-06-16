@@ -1,5 +1,4 @@
 import requests
-import json
 
 browser_header = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, "
                                 "like Gecko) Chrome/88.0.4324.190 Safari/537.36"}
@@ -25,6 +24,9 @@ def get_index(search: str):
 if __name__ == '__main__':
     try:
         while True:
-            get_index(input("검색어 입력\n>>"))
+            try:
+                get_index(input("검색어 입력\n>>"))
+            except IndexError:
+                print('찾을 수 없는 단어')
     except KeyboardInterrupt:
         print("\n종료")
