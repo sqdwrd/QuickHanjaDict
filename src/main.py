@@ -1,5 +1,7 @@
 import requests
 import os
+import webbrowser
+
 
 browser_header = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, "
                                 "like Gecko) Chrome/88.0.4324.190 Safari/537.36"}
@@ -7,11 +9,18 @@ browser_header = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Apple
 
 def get_index(search: str):
     divider = list()
+    if search[0] == ";" or search[0] == ":":
+        open_in_web_browser = True
+    else:
+        open_in_web_browser = False
+    search = search.replace(";", "").replace(":", "")
     for i in range(os.get_terminal_size().columns):
         divider.append("─")
     json = requests.get("https://hanja.dict.naver.com/api3/ccko/search?query=" + search +
                         "&range=word&page=1&shouldSearchOpen=false", headers=browser_header).json()
     word_json = json['searchResultMap']['searchResultListMap']['WORD']['items'][0]
+    if open_in_web_browser:
+        webbrowser.open("https://hanja.dict.naver.com/" + word_json["destinationLink"])
     print(word_json['expEntry'])
     word_char_list = list()
     for i in word_json['expEntry']:
